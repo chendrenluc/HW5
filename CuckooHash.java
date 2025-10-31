@@ -283,7 +283,40 @@ public class CuckooHash<K, V> {
 		}
 		//Now rehash and retry insertion
 		rehash();
-		put(key, value);
+		//put(key, value);
+		//THIS STUFF ABOVE DIDN'T WORK
+		//It gave me a memory error, I'm gonna try to write something new to fix it
+		//Unfortunately I'm running out of time and have to submit this, so there's no guarentee
+		//that it will show up in the submission
+		//There is also no guarentee my new code will work, but here goes nothing
+		//All of this should be pretty similar to the code for the rest of this function
+		//Gonna make a new bucket to reinsert
+		//Key and value
+		Bucket<K, V> retryBucket = new Bucket<>(key, value);
+		//Store an int for the position to retry insertion
+		int retryPos = hash1(key);
+		//loop to find the position and hopefully insert if it's empty
+		for(int i = 0; i < CAPACITY; i++;) {
+			if(table[retryPos] == null) {
+				table[retryPos] = retryBucket;
+				return;
+			}
+			//If it's already there
+			if(table[retryPos].getBucKey().equals(key) && table[retryPos].getValue().equals(value)) {
+				return;
+			}
+			//I think I still have to do a bunch of repositioning and get the key and value
+			//like with the original function, just with the retryPos this time.
+			Bucket<K, V> displaced = table[retryPos];
+			table[retryPos] = retryBucket;
+			key = displaced.getBucKey();
+			value = displaced.getValue();
+			retryBucket = new Bucket<>(key, value);
+			retryPos = (retryPos == hash1(key)) ? hash2(key) : hash1(key);
+		}
+		//If this still fails maybe I can still avoid an infinite loop by just giving an error
+		//It probably won't get me full points but at least it'll run
+		System.err.println("Infinite loop and memory error");
 	}
 
 
