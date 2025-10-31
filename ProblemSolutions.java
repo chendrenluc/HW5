@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Connor Hendren / 002
  *
  *   This java file contains the problem solutions of isSubSet, findKthLargest,
  *   and sort2Arrays methods. You should utilize the Java Collection Framework for
@@ -34,7 +34,21 @@ class ProblemSolutions {
 
         // ADD YOU CODE HERE -- DON'T FORGET TO ADD YOR NAME AT TOP OF FILE
 
-        return false;
+        //Store all elements of list1 in a hashset for the lookup
+        //Must NOT be worse than O(n), so this will help keep it at that
+        Set<Integer> set = new HashSet<>();
+        for(int num : list1) {
+            set.add(num);
+        }
+        //Now check if every element in list2 exists in the set
+        //If an element is in list2 but not list1
+        for(int num : list2) {
+            if(!set.contains(num)) {
+                return false;
+            }
+        }
+        //Otherwise must have all elements in both
+        return true;
     }
 
 
@@ -55,7 +69,17 @@ class ProblemSolutions {
 
         // ADD YOUR CODE HERE
 
-        return 0;
+        //Use a min heap to find and store the largest elements
+        //Make sure to remove all the smallest elements to keep only the largest
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        for(int num : array) {
+            minHeap.offer(num);
+            if(minHeap.size() > k) {
+                minHeap.poll();
+            }
+        }
+        //Find the root of the min heap to find the kth largest
+        return minHeap.peek();
     }
 
 
@@ -76,7 +100,23 @@ class ProblemSolutions {
 
         // ADD YOU CODE HERE
 
-        return null;
+        //Add all elements to a min heap
+        PriorityQueue<Integer> minHeap = newPriorityQueue<>();
+        for(int num : array1) {
+            minHeap.offer(num);
+        }
+        for(int num: array2) {
+            minHeap.offer(num);
+        }
+        //Now extract the elements in a sorted order
+        int[] result = new int[array1.length + array2.length];
+        //Gonna use a while loop so it knows when to stop
+        int i = 0;
+        while(!minHeap.isEmpty()) {
+            result[i++] = minHeap.poll();
+        }
+        //Return the result
+        return result;
     }
 
 }
