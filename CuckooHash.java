@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Connor Hendren / 002
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -250,7 +250,40 @@ public class CuckooHash<K, V> {
 		// Also make sure you read this method's prologue above, it should help
 		// you. Especially the two HINTS in the prologue.
 
-		return;
+		//I am still kind of confused as to how this works
+		//Class today did help a bit but I will make no guarentee this works or that it's good code
+		//Start with h1
+		Bucket<K, V> newBucket = new Bucket<>(key, value);
+		int pos = hash1(key);
+		for(int i = 0; i < CAPACITY; i++) {
+			//First case, check for empty
+			//In this case it should be easy, just insert and return
+			if(table[pos] == null) {
+				table[pos] = newBucket;
+				return;
+			}
+			//Second case, I guess if the key is already present then nothing should happen
+			//Just return, I think this will work and I hope it does
+			if(table[pos].getBucKey().equals(key) && table[pos].getValue().equals(value)) {
+				return;
+			}
+			//Third case, bucket is full of something else
+			//As talked about in class, kick it out and insert new one
+			//Then figure out where to insert displaced item
+			//Then insert
+			//Store and insert new:
+			Bucket<K, V> displaced = table[pos];
+			table[pos] = newBucket;
+			//Reinsert displaced
+			key = displaced.getBucKey();
+			value = displaced.getValue();
+			newBucket = new Bucket<>(key, value);
+			//Alternate between both sides
+			pos = (pos == hash1(key)) ? hash2(key) : hash1(key);
+		}
+		//Now rehash and retry insertion
+		rehash();
+		put(key, value);
 	}
 
 
