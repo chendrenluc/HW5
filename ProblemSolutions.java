@@ -101,7 +101,7 @@ class ProblemSolutions {
         // ADD YOU CODE HERE
 
         //Add all elements to a min heap
-        PriorityQueue<Integer> minHeap = newPriorityQueue<>();
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
         for(int num : array1) {
             minHeap.offer(num);
         }
